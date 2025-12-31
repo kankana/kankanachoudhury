@@ -1,0 +1,138 @@
+/* 1. RESET & NO-BLUE LINKS */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #fff;
+    color: #000;
+    /* This makes the footer stick to the bottom of the screen if content is short */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: inherit; /* Prevents default blue links */
+}
+
+/* 2. HEADER & NAV */
+.site-header { width: 100%; max-width: 1300px; margin: 0 auto; padding: 20px; }
+
+.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+
+.logo-text { font-family: "Georgia", serif; font-size: 2.2rem; font-weight: 500; }
+
+.profile-icon { width: 35px; height: 35px; border-radius: 4px; }
+
+.subscribe-btn { background-color: #d4bc74; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+
+.main-nav { display: flex; justify-content: center; gap: 25px; margin-bottom: 10px; }
+
+.nav-item { font-size: 14px; color: #666; }
+
+.nav-item.active { color: #000; font-weight: bold; border-bottom: 2px solid #000; }
+
+.divider { border: 0; border-top: 1px solid #eee; }
+
+/* 3. THE OVERLAP FIX: MAIN LAYOUT */
+.page-content {
+    flex: 1 0 auto; /* Pushes the footer down by taking all available space */
+    width: 100%;
+    max-width: 1250px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+/* Featured Area */
+.featured-img { width: 100%; border-radius: 4px; display: block; }
+
+.featured-copy { text-align: center; margin-top: 30px; padding-bottom: 20px; }
+
+.featured-copy h1 { font-family: "Georgia", serif; font-size: 2.5rem; margin-bottom: 10px; }
+
+.featured-copy p { font-size: 1.2rem; color: #666; margin-bottom: 10px; }
+
+/* Sidebar Area */
+.side-card { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 40px; }
+
+.side-text h3 { font-family: "Georgia", serif; font-size: 1.3rem; margin-bottom: 5px; }
+
+.side-text p { font-size: 14px; color: #666; margin-bottom: 8px; }
+
+.side-thumb { width: 120px; height: 85px; object-fit: cover; border-radius: 4px; }
+
+.meta { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+
+/* 4. FOOTER FIX */
+.site-footer {
+    flex-shrink: 0; /* Prevents footer from being squished */
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 20px 20px 40px 20px;
+    background: white; /* Ensures it covers content if any weird overflow occurs */
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #999;
+}
+
+.footer-links { display: flex; gap: 20px; }
+
+/* 5. MOBILE RESPONSIVE */
+@media (max-width: 900px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .side-card { flex-direction: column-reverse; }
+    .side-thumb { width: 100%; height: auto; }
+}
+/* --- ARTICLE PAGE SPECIFIC STYLES --- */
+.article-container {
+    max-width: 700px; /* Narrower column for better readability */
+    margin: 0 auto;
+    padding-bottom: 60px;
+}
+
+.article-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.article-header h1 {
+    font-family: "Georgia", serif;
+    font-size: 3rem;
+    margin-top: 10px;
+}
+
+.article-body {
+    font-family: "Georgia", serif;
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: #222;
+}
+
+.article-body p {
+    margin-bottom: 25px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 40px;
+    font-weight: bold;
+    color: #d4bc74;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
