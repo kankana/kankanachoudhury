@@ -25,7 +25,7 @@ a {
 
 .profile-icon { width: 35px; height: 35px; border-radius: 4px; }
 
-.subscribe-btn { background-color: #d4bc74; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+/* .subscribe-btn { background-color: #d4bc74; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; } */
 
 .main-nav { display: flex; justify-content: center; gap: 25px; margin-bottom: 10px; }
 

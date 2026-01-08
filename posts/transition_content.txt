@@ -1,0 +1,46 @@
+# Transition from Experimental AI to Production-Grade Systems
+
+## The Strategic Shift from Chatbots to Agents
+In the current SaaS landscape, we are moving beyond the "grand promises" of all-knowing AI assistants. Most businesses do not need a complex, 400-page "AI bible"; they need a small, dependable, and focused AI agent that can reliably handle one important job without unnecessary drama or complexity.
+
+### Defining the Agent: Action Over Conversation
+The term "AI agent" is often used loosely, but for our engineering teams, the distinction is vital:
+**A chatbot talks; an agent does.**
+An AI agent is a goal-driven program that interprets an input, decides on a course of action, and calls 1-N tools to act in the real world.
+The primary function of an agent is tool use, decision-making, and verification, delivering a final, verifiable result rather than just a conversation.
+
+### The Heart of the MVA: The Loop
+At the core of our MVA is a simple, powerful loop—the engine that drives its behavior. It is a continuous cycle of:
+
+<div class="callout">
+    <p>Perceive -> Decide -> Call Tool(s) -> Verify -> Report.</p>
+</div>
+
+
+
+## Design Principles for Safety and Scale
+Building autonomous systems requires a "safety-first" mindset. We advocate for a "process-first" approach where we deeply understand the workflow before choosing frameworks.
+
+### Architectural Constraints
+* **Guardrails by Default:** We implement budget ceilings (time, cost, steps, tokens) to prevent runaway processes.
+* **Least Privilege:** Agents should only have access to the specific tools and data absolutely required for their job—never give write access if read access suffices.
+* **No Free-Text Outputs:** The agent’s final output should always be a structured format, like JSON, to prevent the agent from "going off-script" and to ensure downstream systems can parse the data reliably.
+* **Thin Service Architecture:** You don't need a complex system to start; a simple web service with a single `/run` endpoint can execute the agent’s loop and be deployed as a "canary" to monitor performance in a controlled environment.
+
+### The Human-in-the-Loop (HITL) Requirement
+For any "write" tool—actions that change the state of our systems—we mandate a Human-in-the-Loop gate. This ensures that while the agent does the heavy lifting, the final accountability remains with a human operator.
+
+## Measuring Success through Service Level Objectives (SLOs)
+We move beyond a "vague sense" of whether an agent is working by using objective success functions and SLOs.
+
+### The Success Function
+This is a simple, binary function that takes the agent’s final output and returns either true or false based on whether the task was actually completed correctly.
+
+### Key Performance Metrics
+We track three common SLOs to manage our agents like any other production service:
+* **Task Success Rate (TSR):** The percentage of successful runs. A good starting target is often 90% or higher.
+* **p95 Latency:** The 95th percentile of time taken to complete a task, measuring worst-case performance.
+* **Cost per Run ($/run):** The average operational cost of a single agent execution, which is critical for managing our ROI.
+
+### Testing with "Tiny Evals"
+We don't need a massive testing suite. We utilize a small set of 10 to 20 "golden tasks"—representative examples with exact expected outputs—allowing us to quickly verify that the agent is still on track after every change.
