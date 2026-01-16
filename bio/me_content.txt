@@ -1,0 +1,18 @@
+# About Me
+## 20 Years of Tech, 0 Years of Being Bored.
+
+They say it takes 10,000 hours to master a skill. Having spent over 20 years in the engineering trenches, I’ve hit that milestone a few times over—moving from the early days of "Java spaghetti" to the frontier of Agentic AI.
+
+I’m currently a Director at FourKites, where I spend my days (and occasionally my dreams) building Digital Workforce AI Agents. Think of them as ultra-productive coworkers who never sleep, don't sneak on your lunch from the office fridge, and use frameworks like LangGraph to solve complex logistics flows.
+
+## My AI Philosophy: Infrastructure is the New King
+While everyone else is chasing the "Model of the Week," I’m the one standing on a table shouting about Grounding, Guardrails, and Routing. I believe an LLM without a solid infrastructure is just a very eloquent hallucination engine. My mission is to turn those "stochastic parrots" into reliable, enterprise-grade workhorses that actually move the needle (and keep the CFO happy).
+
+
+
+## Why Work With Me?
+* **The "A-Team" Whisperer:** I’ve managed global teams of 80+ humans (and now a growing number of agents). I’ve been voted "Best Manager to Work For" three years in a row—mostly because I believe in engineering excellence, DORA metrics, and the power of a well-timed joke.
+* **SaaS Survivor:** I’ve seen the evolution of cloud-native ecosystems from the inside out. I know where the bodies are buried in legacy monoliths, and I know how to "silence" them gracefully to make room for AI.
+* **Bridge Builder:** I speak both "C-Suite" and "Code." 
+
+When I'm not architecting the future of autonomous agents, I'm likely obsessing over engineering KPIs or figuring out how to connect technology with business impact.
