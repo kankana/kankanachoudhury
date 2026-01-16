@@ -1,0 +1,19 @@
+# AI Token Economics in SaaS
+
+<div class="callout">
+    <p>Stop Incinerating Your SaaS Margins: The Unit Economics of AI</p>
+</div>
+
+I remember the exact moment my CFO walked into my office holding our AWS bill. It was the month after we launched our "GenAI-powered analytics assistant." User engagement was up 40%, which was great, but our cloud spend had tripled. That’s when I learned the hardest lesson of this new era: intelligence is a commodity, but compute is a luxury. In standard SaaS, COGS (Cost of Goods Sold) usually scales predictably with storage and bandwidth. In AI, COGS scales with user curiosity. If you treat GPT-4 like a standard database call, the traditional 80%+ SaaS gross margin is dead. You are paying an "intelligence tax" on every single interaction.
+
+The root cause is what I call "engineering laziness." When we started, we wired every feature to the smartest model available because it yielded the best demo on the first try. We were effectively using a Ferrari to deliver pizza. Upon auditing our logs, we found that nearly 65% of incoming user queries were trivial—tasks like summarizing a short paragraph or extracting a date. Using a frontier-class model for that is financial malpractice. The cost difference between a top-tier "reasoning" model and a competent "speed" model (like Claude 3 Haiku or GPT-4o-mini) isn't 20%; it’s often a 30x to 60x differential.
+
+
+
+We had to stop thinking about "The Model" and start thinking about "The Cascade." We rebuilt our backend around an intelligent router—a lightweight classification layer that sits between the user and the LLMs. It analyzes the complexity of the prompt in milliseconds. Is this a simple RAG lookup? Route it to the cheap, fast model. Does it require multi-step logic and code generation? Only then do we escalate to the expensive heavyweights. We decoupled the user experience of intelligence from the backend cost of compute.
+
+The results were immediate. By implementing a simple two-tier cascade, we slashed our average blended inference cost per user by 78% in the first month. Furthermore, our internal evaluations proved that for those tier-1 tasks, the cheaper models were actually faster (lower time-to-first-token), improving the UX while saving the bottom line. We weren't just saving money; we were right-sizing the compute to the task.
+
+We took it a step further by looking at repetitive, structured tasks. For something like converting natural language to SQL queries based on our specific schema, general-purpose models are overkill. We found that fine-tuning a small, open-source 8B parameter model specifically for our SQL tasks gave us higher accuracy than few-shotting GPT-4, and we could host it ourselves for pennies on the dollar. "General intelligence" carries a premium tax that you shouldn't pay for specialized tasks.
+![Description](saas_body.png)
+The modern AI tech stack isn't just about latency, recall, and accuracy anymore; it's about unit economics. AI engineering has become financial engineering. If you cannot articulate your "cost per token" strategy and how you tier intelligence, you do not have a scalable product—you have an expensive hobby that venture capital is currently subsidizing.

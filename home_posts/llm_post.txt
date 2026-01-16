@@ -1,0 +1,25 @@
+# AI Stack": Beyond the LLM
+
+<div class="callout">
+    <p>Here is the deep dive into the rest of the stack, written with the same "hands-on CTO" voice.</p>
+</div>
+
+## The "Happy Path" is a Lie: Why Your API Call is Not a Product
+The moment you move from a Python script to a user-facing application, the "Happy Path", where the model answers perfectly and the API responds in 200ms, vanishes. In production, APIs timeout, models hallucinate, and users ask questions that break your logic. We learned quickly that the LLM is not the application; it is merely a volatile dependency that needs to be managed. If you are building without an orchestration and observability layer, you are effectively flying a plane without instruments. You might take off, but you will definitely crash when the weather turns.
+
+![Description](llm_bodyimage.png)
+
+## Orchestration: From "Spaghetti Scripts" to Directed Graphs
+In our first month, our codebase was a mess of nested if-else statements and raw API calls. It was unmaintainable. We adopted LangChain (and experimented with LlamaIndex for data-heavy tasks) not just for convenience, but for state management. When you move to "Agentic" workflows, where the AI decides which tool to use, you need a framework that handles the memory (chat history) and the decision loops (graphs). We found that moving to LangGraph allowed us to define cyclical workflows (e.g., Plan -> Execute -> Review -> Retry) that simple linear chains couldn't handle. It turned our "random" AI into a predictable state machine.
+
+## Retrieval: The "Semantic" Memory Layer
+You cannot just dump PDFs into a database and hope for the best. We learned that Vector Databases (like Pinecone or Weaviate) are the new "hard drive" for AI, but they are dumb on their own. We had to build a Hybrid Search pipeline. Why? Because vector search is great for concepts ("apple" matches "fruit"), but terrible for specifics ("SKU-123" might match "SKU-124"). By layering keyword search (BM25) on top of semantic search and using Cohere's re-ranking endpoint, we fixed the "lost in the middle" problem where the model ignored key data buried in the 10th document.
+
+## Observability: Debugging the Black Box
+How do you debug a function that returns different output every time? You can't use console.log. We integrated LangSmith (and looked at Arize Phoenix) because we needed distributed tracing for AI. When a user complained that "the bot is lying," we could pull up the exact "Trace" to see the raw input, the retrieved documents (and realize we retrieved the wrong ones), and the model's raw thought process. Without this "X-Ray vision" into the chain, you are debugging by guessing. It reduced our Mean Time to Resolution (MTTR) for hallucination bugs by 80%.
+
+## Evaluation: CI/CD for Intelligence
+The scariest part of deploying AI is the "Regression" problem: you fix a prompt to help User A, and accidentally break the bot for User B. You cannot manually test 1,000 questions before every release. We built an automated evaluation pipeline using Ragas and DeepEval. Now, before we merge any code, a "Judge Model" (GPT-4) runs through a test set and grades our app on metrics like Faithfulness (did it make things up?) and Answer Relevancy. If the score drops below 0.8, the build fails. This moved us from "Vibe Checks" to actual engineering rigor.
+
+## Serving: The Latency War
+Finally, we had to own the "Last Mile." Public APIs can be slow and rate-limited. For our internal tools, we started self-hosting smaller open-source models (like Llama 3) using vLLM and Ollama. The magic of vLLM’s PagedAttention meant we could handle 10x the concurrent users on the same GPU hardware compared to standard HuggingFace pipelines. We realized that for 60% of our tasks, a self-hosted 8B parameter model running at 100 tokens/second was superior to a "smart" but slow cloud model.

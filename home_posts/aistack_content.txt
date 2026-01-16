@@ -1,0 +1,25 @@
+# Evolution of the "AI Stack": Beyond the LLM
+
+<div class="callout">
+    <p>The "Big Bang" Rewrite is Career Suicide: Enter the Strangler Fig</p>
+</div>
+
+Every CIO I talk to is in the same panic: "We need GenAI in our core product by Q2, but our core product is a 12-year-old monolithic ball of Java spaghetti." The instinct is to suggest a rewrite. Do not do this. Rewriting a functional, revenue-generating monolith to accommodate AI is a trap that has killed more startups and careers than I can count. It takes too long, breaks too many things, and provides zero value until the very end. The only professional way to modernize a legacy system for AI is the Strangler Fig Pattern: gradually creating a new "AI ecosystem" around the edges of the old system until the legacy code can be safely decommissioned—or simply ignored.
+
+
+
+## The Interceptor Layer: Stopping the Traffic
+The core of this strategy is the API Gateway (or Reverse Proxy). You don't touch the legacy code yet. Instead, you place a proxy in front of it. This allows you to inspect incoming requests. If a user performs a search, you intercept that specific call and route it to your new, shiny AI Microservice (likely Python/FastAPI). If they are doing something critical like "Processing Payment," you let the request pass through to the old Monolith. The Monolith doesn't even know it’s being strangled; it just sees fewer search requests.
+
+## "Lobotomizing" the Search Bar
+The easiest place to start strangling is the search functionality. Most legacy apps rely on terrible SQL LIKE queries or outdated Solr instances. We spin up a Vector Database (the new microservice) side-by-side with the Monolith. We set up a synchronization pipeline (more on that later) to mirror the legacy SQL data into vector embeddings. Then, we flip the switch on the Gateway: 10% of user searches go to the Vector DB (Semantic Search), 90% go to the Monolith. We compare the metrics. Once the AI proves it's better, we route 100% of traffic to the AI service and delete the old search code from the Monolith. We have effectively "strangled" one feature.
+
+## Decoupled Compute: Keeping Python away from Java
+One of the biggest mistakes is trying to shoehorn AI libraries into the legacy runtime. Do not try to run PyTorch inside a Tomcat server. The Strangler Fig enforces Polyglot Microservices. Your legacy app can stay on its stable, boring, CPU-optimized infrastructure. Your new AI "Fig" services run on GPU-accelerated Kubernetes nodes. This separation of concerns is critical. It means when your LLM pipeline crashes because of a CUDA out-of-memory error, your main application (handling logins and payments) stays up. You limit the "Blast Radius" of experimental AI features.
+
+## The Data Plumbing: CDC is the Lifeline
+The biggest challenge isn't the code; it's the data. The AI service needs to know what’s in the Monolith's database to function (e.g., "Chat with your Data"). We use Change Data Capture (CDC) tools like Debezium. 
+Every time the Monolith writes a row to PostgreSQL, Debezium catches that event and pushes it to a queue (Kafka/Redpanda), which then triggers an embedding worker to update the Vector DB. This ensures your AI Strangler service is always "eventually consistent" with the source of truth, without forcing the Monolith to make expensive dual-write calls.
+
+## The "Fallback" Safety Net
+The beauty of the Strangler pattern is the rollback. AI is non-deterministic; sometimes it hallucinates or times out. Because we are routing traffic at the Gateway level, we can implement automatic fallbacks. If the AI microservice takes longer than 3 seconds to generate a summary, the Gateway kills the connection and instantly routes the request back to the legacy Monolith's old logic. The user gets a slightly worse experience (the old way), but they never get an error page. This gives you the confidence to deploy aggressive AI features in production, knowing the "Old Faithful" monolith is there to catch you if you fall.

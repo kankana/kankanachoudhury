@@ -1,0 +1,49 @@
+# The "Zombie PoC" Graveyard: Why AI Projects Fail at Scale
+
+<div class="callout">
+    <p>The "Model" is Just a Function Call: Surviving the Production AI Stack</p>
+</div>
+I am tired of seeing demos.
+
+If I see one more "chatbot in 5 minutes" tutorial using a pre-baked API key and a CSV file, I might scream. Don’t get me wrong, prototyping has never been faster. But in the last 18 months, I’ve watched brilliant engineering teams hit a brick wall the moment they try to take that prototype from localhost to production.
+
+The reality of the modern AI stack is that the Large Language Model (LLM) itself, the thing getting all the headlines, is maybe 10% of the engineering effort. The other 90%? That’s the unsexy, grinding work of retrieval, orchestration, evaluation, and cost management. We are seeing 85% of AI projects stall in the Proof of Concept (PoC) phase not because the models aren't smart enough, but because the infrastructure around them is fragile.
+
+If you want to know if a technical leader has actually shipped GenAI at scale or just read about it on Twitter, ask them about these ten problems. Here is the real stack we are building today.
+
+## 1. The "10% vs 90%" Reality
+The most dangerous misconception in 2024-2025 is that the model is the product. It isn't. The model is a stochastic (random) function call. Treating GPT-4 or Claude like a database or a deterministic logic engine is a recipe for disaster. We learned this the hard way: the "magic" doesn't happen in the prompt; it happens in the context assembly. If you aren't spending 90% of your compute and engineering time on pre-processing (cleaning data) and post-processing (verifying outputs), you aren't building a product; you're building a slot machine.
+
+## 2. RAG is an ETL Problem, Not an AI Problem
+Everyone talks about Retrieval-Augmented Generation (RAG) like it’s a magic wand. In practice, RAG is just a really difficult data engineering pipeline. The default "chunking" strategies (splitting text every 500 characters) are garbage for enterprise data. We found that semantic chunking, breaking data down by meaning rather than character count, increased our retrieval accuracy by nearly 40%. If your retrieval fails, the smartest model in the world creates a convincing hallucination. Hybrid search (combining vector similarity with old-school keyword search like BM25) is the only way to get production-grade recall.
+
+![Description](poc_post_bodyimage.png)
+
+## 3. The Vector Database is the New "State"
+Two years ago, vector databases were niche. Now, the market is exploding toward $2.2 billion, and for good reason. But simply dumping embeddings into Pinecone or Weaviate isn't enough. The challenge is indexing at scale. We had to learn the difference between HNSW (fast, memory-hungry) and IVFFlat (slower, storage-efficient) indexes the hard way when our latency spiked. The vector DB is now our long-term memory, and managing the "drift" in embeddings (as models update) is a new maintenance nightmare no one talks about.
+
+## 4. The Orchestration "bloat" Trap
+In the early days, we used heavy frameworks like LangChain for everything. It was great for day one, but it became "dependency hell" by month three. We stripped it out. In production, you want lightweight, transparent orchestration. When you are debugging a chain of five different LLM calls that failed, you don't want layers of abstraction hiding the raw prompts. We moved to atomic, controllable primitives. If you can't see the raw string going into the model, you can't optimize it.
+
+## 5. Evaluation: The End of the "Vibe Check"
+How do you test software that gives a different answer every time you run it? "It looks good to me" (the vibe check) is not a unit test. We had to build a deterministic evaluation pipeline using "LLM-as-a-Judge", literally using GPT-4 to grade the homework of smaller, faster models. We track metrics like Answer Relevance and Context Faithfulness. If you aren't running an eval suite on every commit, you are shipping bugs you can't even see.
+
+## 6. FinOps: The Token Economics
+The cloud bill for GenAI is terrifying if you aren't watching. GPT-4 is expensive. We realized that 70% of our user queries didn't need "PhD-level" intelligence; they needed "intern-level" speed. We implemented a model router: simple queries go to a cheap, fast model (like GPT-4o-mini or a hosted Llama 3), and only complex reasoning tasks get routed to the expensive heavyweights. This slashed our inference costs by 60% overnight.
+
+## 7. Latency is the UX Killer
+Users have been trained by Google to expect results in milliseconds. LLMs take seconds. That gap is deadly. We obsess over Time to First Token (TTFT). If you aren't streaming the response (sending chunks of text as they generate), the app feels broken. We also realized that "pre-computing" embeddings during off-hours was essential. You cannot afford to do heavy embedding math while the user is staring at a loading spinner.
+
+## 8. The "Lost in the Middle" Phenomenon
+We blindly trusted that huge context windows (128k+ tokens) meant we could just stuff entire books into the prompt. Wrong. Research shows and our logs confirmed that models are great at remembering the beginning and end of a prompt, but they often forget the middle. We had to implement re-ranking algorithms. We retrieve 50 documents, but use a specialized smaller model (a Cross-Encoder) to re-rank them and only feed the top 5 to the LLM. Quality went up; costs went down.
+![Description](poc_post_docimage.png)
+
+## 9. Guardrails are Non-Negotiable
+You cannot trust the model to be safe. It will try to be helpful even when it shouldn't be (e.g., helping a user bypass a paywall). We deployed a "guardrails" layer, a separate, smaller classification model that runs before the user's prompt hits the main LLM (to check for injection attacks) and after the generation (to check for PII or toxicity). It adds latency, but it prevents the PR disasters that kill startups.
+
+## 10. The Rise of the "AI Engineer"
+I stopped trying to hire PhD researchers for our product teams. I don't need someone who can design a new transformer architecture; I need a software engineer who understands distributed systems, API latency, and can read a Python stack trace. The modern "AI Engineer" is a backend engineer who has learned how to wrangle non-deterministic APIs. They are the ones bridging the gap between a Jupyter notebook and a Kubernetes cluster.
+
+<div class="callout">
+    <p>My advice to you: Stop optimizing your prompts and start optimizing your pipeline. The model will change next week. Your infrastructure needs to survive it.</p>
+</div>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead in the era of agentic AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+    <div class="header-top">
+        <div class="header-left">
+            <img src="../images/profile.png" alt="Profile" class="profile-icon">
+        </div>
+        <div class="header-center">
+            <a href="../index.html" class="logo-text">Kankana Choudhury</a>
+        </div>
+    </div>
+
+    <hr class="divider">
+</header>
+
+<main class="article-container">
+    <div class="post-thumbnail">
+        <img src="../images/poc_post_thumbnail.png" alt="Post Thumbnail" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px;">
+    </div>
+        <div id="markdown-target">
+            Loading content...
+        </div>
+
+    <footer class="article-footer">
+                <a href="../index.html" class="back-link">← Back to Home</a>
+            </footer>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p>&copy; 2026 kankana.com</p>
+            <div class="footer-links">
+                <a href="https://www.linkedin.com/in/kankana/">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        async function loadAndConvertMarkdown() {
+            const target = document.getElementById('markdown-target');
+            // const dateEl = document.getElementById('post-date');
+
+            try {
+                // Change 'content.txt' to your actual file path
+                const response = await fetch('poc_post_content.txt');
+                
+                if (!response.ok) {
+                    throw new Error('File not found. Ensure "poc_post_content.txt" is in the same folder.');
+                }
+
+                const rawMarkdown = await response.text();
+
+                // Configure Marked.js (Optional: add GFM for GitHub Flavored Markdown)
+                marked.setOptions({
+                    gfm: true,
+                    breaks: true
+                });
+
+                // Convert and Inject
+                target.innerHTML = marked.parse(rawMarkdown);
+                
+                // Optional: Update the meta date to today
+                const today = new Date().toLocaleDateString('en-US', { 
+                    month: 'long', day: 'numeric', year: 'numeric' 
+                });
+
+            } catch (error) {
+                target.innerHTML = `<div class="callout"><p>Error: ${error.message}</p></div>`;
+            }
+        }
+
+        window.onload = loadAndConvertMarkdown;
+    </script>
+</body>
+</html>
