@@ -1,4 +1,4 @@
-# AI Stack": Beyond the LLM
+# Enterprise AI : Beyond the LLM
 
 <div class="callout">
     <p>Here is the deep dive into the rest of the stack, written with the same "hands-on CTO" voice.</p>
