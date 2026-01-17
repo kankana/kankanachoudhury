@@ -68,11 +68,6 @@
 
                 // Convert and Inject
                 target.innerHTML = marked.parse(rawMarkdown);
-                
-                // Optional: Update the meta date to today
-                const today = new Date().toLocaleDateString('en-US', { 
-                    month: 'long', day: 'numeric', year: 'numeric' 
-                });
 
             } catch (error) {
                 target.innerHTML = `<div class="callout"><p>Error: ${error.message}</p></div>`;
