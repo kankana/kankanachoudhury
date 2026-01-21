@@ -1,0 +1,67 @@
+# Battle Scars: Leading a Legacy Org into the Agentic Age
+
+<div class="callout">
+    <p>Survival Strategies for the Transition to Agentic Infrastructure</p>
+</div>
+
+I’ve spent 20 years in the trenches of engineering leadership. I’ve seen the transition from on-prem monoliths to cloud-native microservices, and I thought that was the "big one." 
+
+I was wrong.
+
+The move from deterministic software to "agentic" AI is the most violent shift in engineering SOPs I’ve ever managed. It’s not just a tech upgrade; it’s a fundamental rewiring of how a 120-person org thinks, builds, and fails. 
+
+If you’re a Director moving your team from the old world of legacy code to the new world of AI agents, get ready. Here are the ten scars I have to show for it.
+
+## 1. The Death of the "Green Build"
+In the legacy world, if the tests passed, you shipped. In the agentic world, there is no "pass." Agents are probabilistic—they’re moody. I watched my QA teams have a collective meltdown because they couldn't get a 100% green light on a test suite. 
+
+The lesson? We had to stop looking for "Correctness" and start measuring **Confidence Intervals**. If we don’t build an LLM-as-a-judge eval suite, we aren't shipping software; we are shipping a guess.
+
+## 2. Token Hemorrhaging and "Circuit Breakers"
+I’ve seen an autonomous agent get stuck in a logic loop and burn $500 in 30 minutes. In a legacy system, a loop just spikes the CPU; in the AI world, a loop drains the bank account. 
+
+We need financial alerts and "circuit breakers." We implemented hard caps on reasoning depth and token spend per session. Governance isn't just a spreadsheet; it’s a kill-switch in the code.
+
+## 3. Prompt Spaghetti is the New Technical Debt
+Early on, my engineers were hard-coding prompts deep inside microservices. It was a nightmare. A week later, no one remembered which prompt version was in production or why "Please be helpful" was added to the header.
+
+We had to treat prompts like managed assets. We built a central **Prompt Registry** with version control. If a prompt isn't versioned and tracked, it doesn't exist.
+
+## 4. Legacy Data is important
+Everyone wants "Agents" to solve their business problems, but their data is still trapped in 10-year-old SQL tables with zero documentation. An agent trying to read messy legacy data is like a genius trying to read a book with half the pages ripped out.
+
+The AI journey is actually a data cleaning journey. We spent more time building a **Semantic Data Layer** than we did playing with LLMs. 
+
+## 5. The Productivity Paradox
+We thought AI would make our developers 10x faster. In reality, they spent 20% of their time coding and 80% "babysitting" AI outputs. Our velocity actually dipped before it climbed because the "checking" was harder than the "writing."
+
+We had to redefine KPIs. We stopped measuring PR counts and started measuring **System Orchestration** efficiency. If "Context Faithfulness" drops, it signals that the RAG pipeline (retrieval) is failing, not the AI model itself. The job isn't writing lines of code anymore; it's managing the machines that do.
+
+## 6. The Security "Write" Access Issue
+The moment we give an agent "write" access to a production database, my CISO will have a heart attack. And they should. Agents hallucinate, and you don't want a hallucination deleting my "PurchaseOrders" table.
+
+We built a **Sandboxed Execution** layer. Agents can propose changes, but they can't execute them without a human-in-the-loop or a governed validation layer. 
+
+## 7. Explainability is the Product Feature
+Business stakeholders don't care about my vector embeddings. They care that the AI agent gave a weird answer to a VIP customer once. One mistake in the AI world feels heavier than five bugs in the legacy world.
+
+We added **Chain of Thought** visibility. If the agent can't explain why it made a decision, we don't let the user see it. **Explainability feature** is the only way to win back the trust of the board.
+
+## 8. Asynchronous is the Only Way for SLA
+Legacy microservices are built for millisecond response times. LLM agents take seconds—sometimes minutes—to "think." If you try to run agents in a synchronous legacy flow, the whole system will time out and die.
+
+We moved back to a heavy **Event-Driven Architecture**. Everything is a webhook. Everything is async. We had to build for a world where the "thinking" takes longer than "executing".
+
+## 9. Culture Shock: From Java Gurus to System Orchestrators
+I had senior engineers who were gods in the Java world feel completely irrelevant in the AI age. That ego-bruising causes massive internal friction and resistance to change.
+
+We didn't hire a bunch of "AI Researchers." We created **AI Guilds** to reskill our best systems thinkers. The best AI engineers are just great backend engineers who aren't afraid of non-deterministic APIs.
+
+## 10. The Trap
+The biggest mistake I made? Trying to use an AI Agent to solve a problem that a simple `if-else` statement could have fixed for free. 
+
+**Be a skeptic.** Just because I can use an agent doesn't mean I should. My job as a Director is to protect the ROI, which often means empowering the team to decide to put the expensive LLM away and use a simple heuristic instead.
+
+<div class="callout">
+    <p>My advice: The next 10 years of engineering aren't about who has the best model. It’s about who has the battle scars and the infrastructure to survive & win in this transformative age.</p>
+</div>

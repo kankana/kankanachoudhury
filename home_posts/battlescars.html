@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>From Chatbots to Agents</title>
+    <title>Engineering SOP for AI</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
@@ -23,8 +23,11 @@
     <hr class="divider">
 </header>
 
-    <main class="article-container">
-    <div id="markdown-target">
+<main class="article-container">
+    <div class="post-thumbnail">
+        <img src="agent_transformation.png" alt="Post Thumbnail" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px;">
+    </div>
+        <div id="markdown-target">
             Loading content...
         </div>
 
@@ -46,14 +49,13 @@
     <script>
         async function loadAndConvertMarkdown() {
             const target = document.getElementById('markdown-target');
-            // const dateEl = document.getElementById('post-date');
 
             try {
                 // Change 'content.txt' to your actual file path
-                const response = await fetch('mva_content.txt');
+                const response = await fetch('battlescars_content.txt');
                 
                 if (!response.ok) {
-                    throw new Error('File not found. Ensure "mva_content.txt" is in the same folder.');
+                    throw new Error('File not found. Ensure "battlescars_content.txt" is in the same folder.');
                 }
 
                 const rawMarkdown = await response.text();
